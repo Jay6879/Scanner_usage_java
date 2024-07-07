@@ -1,0 +1,94 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        String[] st = s.split(" ");
+        
+        int[] nodes = new int[st.length];
+        for(int i = 0; i < nodes.length; i++){
+            nodes[i] = Integer.parseInt(st[i]);
+        }
+        
+        BinaryTree tree = new BinaryTree();
+        TreeNode root = tree.buildTree(nodes);
+        
+        RightView(root);
+    }
+    
+    public static void RightView(TreeNode root) {
+        if (root == null) return;
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            int n = q.size();
+            for(int i = 0; i < n; i++){
+                TreeNode node = q.poll();
+                if(i==n-1){
+                    System.out.print(node.val+" ");
+                }
+                if(node.left != null){
+                    q.add(node.left);
+                }
+                
+                if(node.right!=null)
+                    q.add(node.right);
+                
+            }
+        }
+    }
+    
+    static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        
+        TreeNode(int data) {
+            this.val = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    static class BinaryTree {
+        
+        public TreeNode buildTree(int[] nodes) {
+            Queue<TreeNode> q = new LinkedList<>();
+            
+            TreeNode root = new TreeNode(nodes[0]);
+            
+            q.add(root);
+            int i = 1;
+            
+            while(!q.isEmpty()){
+                int n = q.size();
+                
+                for(int j=0;j<n;j++){
+                    TreeNode curr = q.remove();
+                    if(nodes[i]!=-1){
+                        curr.left = new TreeNode(nodes[i]);
+                        q.add(curr.left);
+                    }
+                    
+                    i++;
+                    
+                    if(i<nodes.length && nodes[i]!=-1){
+                        curr.right = new TreeNode(nodes[i]);
+                        q.add(curr.right);
+                    }
+                    
+                    i++;
+                    
+                }
+            }
+            
+            return root;
+            
+        }
+    }
+}
